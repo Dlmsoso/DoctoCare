@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const userService = require('./controller/UserControl')
+
 // Créer une instance d'Express
 const app = express();
 
@@ -10,7 +12,7 @@ app.use(bodyParser.json());
 // Routes de l'API
 app.get('/api/users', (req, res) => {
   // Logique pour récupérer tous les utilisateurs depuis une base de données
-  const users = [{ id: 1, name: 'John Doe' }, { id: 2, name: 'Jane Smith' }];
+  const users = userService.getAllUsers(req, res);
   res.json(users);
 });
 
