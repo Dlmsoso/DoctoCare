@@ -1,3 +1,4 @@
+import 'package:docto/page/profilePage.dart';
 import 'package:flutter/material.dart';
 
 import 'doctorListPage.dart';
@@ -15,7 +16,16 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          Icon(Icons.person),
+          IconButton(
+            icon: Icon(
+              Icons.person,
+              size: 36,
+            ),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProfilePage()),
+            ),
+          ),
         ],
       ),
       body: Center(
