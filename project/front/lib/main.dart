@@ -30,7 +30,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -43,7 +42,13 @@ class MyApp extends StatelessWidget {
         Locale('en'),
         Locale('fr'),
       ],
-      theme: ThemeData(
+      theme: themeData(),
+      home: const ConnexionPage(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+
+  ThemeData themeData() => ThemeData(
         useMaterial3: true,
         filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(
@@ -54,11 +59,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: Color.fromRGBO(116, 231, 217, 1),
           foregroundColor: Colors.black,
         ),
-      ),
-      home: const ConnexionPage(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
+      );
 
   Route? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {

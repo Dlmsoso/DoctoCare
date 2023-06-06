@@ -22,45 +22,15 @@ class _ConnexionPage extends State<ConnexionPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Connexion",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 28,
-                    ),
-                  ),
-                ),
+                connectionTitleWidget(),
                 SizedBox(height: 50),
                 loginWidget(),
                 SizedBox(height: 15),
                 passwordWidget(),
                 SizedBox(height: 15),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () => print('arg'),
-                    child: Text(
-                      "Mot de passe oublié",
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                  ),
-                ),
+                forgotPasswordWidget(),
                 SizedBox(height: 15),
-                ElevatedButton(
-                  onPressed: () => Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    "/mainPage",
-                    (_) => false,
-                  ),
-                  child: Text(
-                    "Connexion",
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
+                connectionButton()
               ],
             ),
           ),
@@ -68,6 +38,42 @@ class _ConnexionPage extends State<ConnexionPage> {
       ),
     );
   }
+
+  Widget connectionButton() => ElevatedButton(
+        onPressed: () => Navigator.pushNamedAndRemoveUntil(
+          context,
+          "/mainPage",
+          (_) => false,
+        ),
+        child: Text(
+          "Connexion",
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+      );
+
+  Widget connectionTitleWidget() => Align(
+        alignment: Alignment.topLeft,
+        child: Text(
+          "Connexion",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 28,
+          ),
+        ),
+      );
+
+  Widget forgotPasswordWidget() => Align(
+        alignment: Alignment.centerRight,
+        child: TextButton(
+          onPressed: () => print('arg'),
+          child: Text(
+            "Mot de passe oublié",
+            style: TextStyle(color: Colors.grey),
+          ),
+        ),
+      );
 
   Widget loginWidget() => Container(
         decoration: BoxDecoration(

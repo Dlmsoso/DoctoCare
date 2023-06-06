@@ -13,16 +13,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(
-            icon: Icon(
-              Icons.person,
-              size: 36,
-            ),
-            onPressed: () => Navigator.pushNamed(
-              context,
-              "/profilePage",
-            ),
-          ),
+          profileButton(),
         ],
       ),
       body: Center(
@@ -48,6 +39,17 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+
+  Widget profileButton() => IconButton(
+        icon: Icon(
+          Icons.person,
+          size: 36,
+        ),
+        onPressed: () => Navigator.pushNamed(
+          context,
+          "/profilePage",
+        ),
+      );
 }
 
 Widget mainWidget({
