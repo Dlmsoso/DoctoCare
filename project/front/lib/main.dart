@@ -1,7 +1,8 @@
-import 'package:docto/page/mainpage.dart';
+import 'package:docto/page/connectionPage.dart';
 import 'package:docto/provider/profileProvider.dart';
 import 'package:docto/provider/threadProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -27,6 +28,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('fr'),
+      ],
       theme: ThemeData(
         useMaterial3: true,
         filledButtonTheme: FilledButtonThemeData(
@@ -39,7 +48,7 @@ class MyApp extends StatelessWidget {
           foregroundColor: Colors.black,
         ),
       ),
-      home: const MyHomePage(),
+      home: const ConnexionPage(),
       debugShowCheckedModeBanner: false,
     );
   }

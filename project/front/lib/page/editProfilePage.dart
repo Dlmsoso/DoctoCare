@@ -30,7 +30,12 @@ class _EditProfilePage extends State<EditProfilePage> {
         actions: [
           TextButton(
             onPressed: saveProfile,
-            child: Text("Sauvegarder"),
+            child: Text(
+              "Sauvegarder",
+              style: TextStyle(
+                color: Color.fromRGBO(31, 196, 178, 1),
+              ),
+            ),
           ),
         ],
       ),
@@ -70,11 +75,24 @@ class _EditProfilePage extends State<EditProfilePage> {
               ),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 15),
-                child: FormBuilderTextField(
+                child: FormBuilderDateTimePicker(
+                  inputType: InputType.date,
+                  locale: const Locale("fr", "FR"),
                   name: "birth",
                   initialValue: context.read<ProfileProvider>().birth,
                   decoration: InputDecoration(
                     labelText: "Date de naissance",
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 15),
+                child: FormBuilderTextField(
+                  name: "city",
+                  initialValue: context.read<ProfileProvider>().city,
+                  decoration: InputDecoration(
+                    labelText: "Ville",
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -93,9 +111,13 @@ class _EditProfilePage extends State<EditProfilePage> {
     bool sameLastName = _formKey.currentState?.fields["lastName"]?.value ==
         context.read<ProfileProvider>().lastName;
 
-    bool samebirth = _formKey.currentState?.fields["birth"]?.value ==
+    bool sameBirth = _formKey.currentState?.fields["birth"]?.value ==
         context.read<ProfileProvider>().birth;
-    return sameFirstName && sameLastName && samebirth;
+
+    bool sameCity = _formKey.currentState?.fields["city"]?.value ==
+        context.read<ProfileProvider>().city;
+
+    return sameFirstName && sameLastName && sameBirth && sameCity;
   }
 
   Future<void> askForSave() {
@@ -135,6 +157,7 @@ class _EditProfilePage extends State<EditProfilePage> {
           firstname: _formKey.currentState?.fields["firstName"]?.value,
           lastName: _formKey.currentState?.fields["lastName"]?.value,
           birth: _formKey.currentState?.fields["birth"]?.value,
+          city: _formKey.currentState?.fields["city"]?.value,
         );
   }
 }
