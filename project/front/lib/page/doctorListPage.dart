@@ -13,28 +13,7 @@ class DoctorListPage extends StatefulWidget {
 class _DoctorListPage extends State<DoctorListPage> {
   @override
   Widget build(BuildContext context) {
-    List<Widget> threadListWidget = context
-        .watch<ThreadProvider>()
-        .threadList
-        .map(
-          (thread) => Card(
-            child: ListTile(
-              title: Text(thread.name),
-              onTap: () {
-                Navigator.pushNamed(
-                  context,
-                  "/doctorListPage/thread",
-                  arguments: thread,
-                );
-              },
-              trailing: IconButton(
-                onPressed: () => removeThreadWidget(thread),
-                icon: Icon(Icons.delete),
-              ),
-            ),
-          ),
-        )
-        .toList();
+    List<Widget> threadListWidget = updateCardWidget();
 
     return Scaffold(
       appBar: AppBar(),
@@ -49,12 +28,35 @@ class _DoctorListPage extends State<DoctorListPage> {
       floatingActionButton: FloatingActionButton.extended(
         label: Text("Nouveau"),
         icon: Icon(Icons.add),
-        onPressed: createCard,
+        onPressed: createCardPopUp,
       ),
     );
   }
 
-  Future<void> createCard() {
+  List<Widget> updateCardWidget() => context
+      .watch<ThreadProvider>()
+      .threadList
+      .map(
+        (thread) => Card(
+          child: ListTile(
+            title: Text(thread.name),
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                "/doctorListPage/thread",
+                arguments: thread,
+              );
+            },
+            trailing: IconButton(
+              onPressed: () => removeThreadWidget(thread),
+              icon: Icon(Icons.delete),
+            ),
+          ),
+        ),
+      )
+      .toList();
+
+  Future<void> createCardPopUp() {
     List<String> doctorList = context.read<ProfileProvider>().doctorList;
     String doctorDropdownValue = doctorList.first;
     TextEditingController threadName = TextEditingController();
@@ -100,7 +102,7 @@ class _DoctorListPage extends State<DoctorListPage> {
                             doctorDropdownValue = value!;
                           });
                         },
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -113,15 +115,16 @@ class _DoctorListPage extends State<DoctorListPage> {
                   },
                 ),
                 TextButton(
-                    child: const Text('Confirmer'),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        context
-                            .read<ThreadProvider>()
-                            .createThread(threadName.text, doctorDropdownValue);
-                        Navigator.of(context).pop();
-                      }
-                    }),
+                  child: const Text('Confirmer'),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      context
+                          .read<ThreadProvider>()
+                          .createThread(threadName.text, doctorDropdownValue);
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
               ],
             );
           },
@@ -132,28 +135,29 @@ class _DoctorListPage extends State<DoctorListPage> {
 
   Future<void> removeThreadWidget(thread) {
     return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content:
-                Text("Êtes vous sûr de vouloir supprimer cette conversation ?"),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Retour'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: const Text('Confirmer'),
-                onPressed: () {
-                  context.read<ThreadProvider>().deleteThread(thread.id);
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        });
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content:
+              Text("Êtes vous sûr de vouloir supprimer cette conversation ?"),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Retour'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Confirmer'),
+              onPressed: () {
+                context.read<ThreadProvider>().deleteThread(thread.id);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

@@ -15,18 +15,7 @@ class _ProfilePage extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pushNamed(
-              context,
-              "/profilePage/edit",
-            ),
-            child: Text(
-              "Éditer",
-              style: TextStyle(
-                color: Color.fromRGBO(31, 196, 178, 1),
-              ),
-            ),
-          )
+          editWidget(),
         ],
       ),
       body: Column(
@@ -62,26 +51,41 @@ class _ProfilePage extends State<ProfilePage> {
               ),
             ),
           ),
-          Container(
-            margin: EdgeInsets.only(bottom: 20),
-            child: ElevatedButton(
-              onPressed: () => Navigator.pushNamedAndRemoveUntil(
-                context,
-                "/logout",
-                (_) => false,
-              ),
-              child: Text(
-                "Se deconnecter",
-                style: TextStyle(
-                  color: Color.fromRGBO(31, 196, 178, 1),
-                ),
-              ),
-            ),
-          ),
+          disconnectWidget(),
         ],
       ),
     );
   }
+
+  Widget editWidget() => TextButton(
+        onPressed: () => Navigator.pushNamed(
+          context,
+          "/profilePage/edit",
+        ),
+        child: Text(
+          "Éditer",
+          style: TextStyle(
+            color: Color.fromRGBO(31, 196, 178, 1),
+          ),
+        ),
+      );
+
+  Widget disconnectWidget() => Container(
+        margin: EdgeInsets.only(bottom: 20),
+        child: ElevatedButton(
+          onPressed: () => Navigator.pushNamedAndRemoveUntil(
+            context,
+            "/logout",
+            (_) => false,
+          ),
+          child: Text(
+            "Se deconnecter",
+            style: TextStyle(
+              color: Color.fromRGBO(31, 196, 178, 1),
+            ),
+          ),
+        ),
+      );
 
   List<Widget> infoWidget({
     required String title,

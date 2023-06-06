@@ -26,54 +26,63 @@ class _ThreadPage extends State<ThreadPage> {
       appBar: AppBar(title: Text(thread.name)),
       body: Column(
         children: [
-          Expanded(
-            child: ListView(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              children: [
-                ...thread.conversation.map((message) => messageWidget(message))
-              ],
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(right: 10, left: 10, bottom: 5),
-            padding: EdgeInsets.only(left: 15),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black38),
-              borderRadius: BorderRadius.circular(25),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: writtingText,
-                    decoration: InputDecoration(
-                      hintText: "...",
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-                IconButton(
-                    onPressed: () {
-                      if (writtingText.text.isNotEmpty) {
-                        context.read<ThreadProvider>().sendMessage(
-                              id,
-                              Message(
-                                author: Author.myself,
-                                text: writtingText.text,
-                              ),
-                            );
-                        writtingText.clear();
-                      }
-                    },
-                    icon: Icon(Icons.send))
-              ],
-            ),
-          ),
+          chatSection(thread),
+          messageSection(),
         ],
       ),
     );
   }
+
+  Widget chatSection(Thread thread) => Expanded(
+        child: ListView(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          children: [
+            ...thread.conversation.map((message) => messageWidget(message))
+          ],
+        ),
+      );
+
+  Widget messageSection() => Container(
+        margin: EdgeInsets.only(right: 10, left: 10, bottom: 15),
+        padding: EdgeInsets.only(left: 15),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black38),
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: Row(
+          children: [
+            messageFieldWidget(),
+            sendMessageIcon(),
+          ],
+        ),
+      );
+
+  Widget messageFieldWidget() => Expanded(
+        child: TextField(
+          controller: writtingText,
+          decoration: InputDecoration(
+            hintText: "...",
+            border: InputBorder.none,
+          ),
+        ),
+      );
+
+  Widget sendMessageIcon() => IconButton(
+        onPressed: () {
+          if (writtingText.text.isNotEmpty) {
+            context.read<ThreadProvider>().sendMessage(
+                  id,
+                  Message(
+                    author: Author.myself,
+                    text: writtingText.text,
+                  ),
+                );
+            writtingText.clear();
+          }
+        },
+        icon: Icon(Icons.send),
+      );
 
   Widget messageWidget(Message message) {
     return message.author == Author.myself

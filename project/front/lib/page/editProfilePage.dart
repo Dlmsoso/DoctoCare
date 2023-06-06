@@ -17,26 +17,9 @@ class _EditProfilePage extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () async {
-            if (isChangeSave()) {
-              Navigator.pop(context);
-              return;
-            }
-            await askForSave();
-          },
-          icon: Icon(Icons.close),
-        ),
+        leading: closeButton(),
         actions: [
-          TextButton(
-            onPressed: saveProfile,
-            child: Text(
-              "Sauvegarder",
-              style: TextStyle(
-                color: Color.fromRGBO(31, 196, 178, 1),
-              ),
-            ),
-          ),
+          saveButton(),
         ],
       ),
       body: FormBuilder(
@@ -47,62 +30,93 @@ class _EditProfilePage extends State<EditProfilePage> {
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
             children: [
-              Icon(
-                Icons.person,
-                size: 36,
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 15),
-                child: FormBuilderTextField(
-                  name: "firstName",
-                  initialValue: context.read<ProfileProvider>().firstName,
-                  decoration: InputDecoration(
-                    labelText: "Prénom",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 15),
-                child: FormBuilderTextField(
-                  name: "lastName",
-                  initialValue: context.read<ProfileProvider>().lastName,
-                  decoration: InputDecoration(
-                    labelText: "Nom",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 15),
-                child: FormBuilderDateTimePicker(
-                  inputType: InputType.date,
-                  locale: const Locale("fr", "FR"),
-                  name: "birth",
-                  initialValue: context.read<ProfileProvider>().birth,
-                  decoration: InputDecoration(
-                    labelText: "Date de naissance",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 15),
-                child: FormBuilderTextField(
-                  name: "city",
-                  initialValue: context.read<ProfileProvider>().city,
-                  decoration: InputDecoration(
-                    labelText: "Ville",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
+              iconWidget(),
+              firstNameWidget(),
+              lastNameWidget(),
+              birthWidget(),
+              cityWidget(),
             ],
           ),
         ),
       ),
     );
   }
+
+  Widget closeButton() => IconButton(
+        onPressed: () async {
+          if (isChangeSave()) {
+            Navigator.pop(context);
+            return;
+          }
+          await askForSave();
+        },
+        icon: Icon(Icons.close),
+      );
+
+  Widget saveButton() => TextButton(
+        onPressed: saveProfile,
+        child: Text(
+          "Sauvegarder",
+          style: TextStyle(
+            color: Color.fromRGBO(31, 196, 178, 1),
+          ),
+        ),
+      );
+
+  Widget iconWidget() => Icon(
+        Icons.person,
+        size: 36,
+      );
+
+  Widget firstNameWidget() => Container(
+        margin: EdgeInsets.symmetric(vertical: 15),
+        child: FormBuilderTextField(
+          name: "firstName",
+          initialValue: context.read<ProfileProvider>().firstName,
+          decoration: InputDecoration(
+            labelText: "Prénom",
+            border: OutlineInputBorder(),
+          ),
+        ),
+      );
+
+  Widget lastNameWidget() => Container(
+        margin: EdgeInsets.symmetric(vertical: 15),
+        child: FormBuilderTextField(
+          name: "lastName",
+          initialValue: context.read<ProfileProvider>().lastName,
+          decoration: InputDecoration(
+            labelText: "Nom",
+            border: OutlineInputBorder(),
+          ),
+        ),
+      );
+
+  Widget birthWidget() => Container(
+        margin: EdgeInsets.symmetric(vertical: 15),
+        child: FormBuilderDateTimePicker(
+          inputType: InputType.date,
+          locale: const Locale("fr", "FR"),
+          name: "birth",
+          initialValue: context.read<ProfileProvider>().birth,
+          decoration: InputDecoration(
+            labelText: "Date de naissance",
+            border: OutlineInputBorder(),
+          ),
+        ),
+      );
+
+  Widget cityWidget() => Container(
+        margin: EdgeInsets.symmetric(vertical: 15),
+        child: FormBuilderTextField(
+          name: "city",
+          initialValue: context.read<ProfileProvider>().city,
+          decoration: InputDecoration(
+            labelText: "Ville",
+            border: OutlineInputBorder(),
+          ),
+        ),
+      );
 
   bool isChangeSave() {
     bool sameFirstName = _formKey.currentState?.fields["firstName"]?.value ==
