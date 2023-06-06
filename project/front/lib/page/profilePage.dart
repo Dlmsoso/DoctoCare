@@ -1,4 +1,3 @@
-import 'package:docto/page/editProfilePage.dart';
 import 'package:docto/provider/profileProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,9 +16,9 @@ class _ProfilePage extends State<ProfilePage> {
       appBar: AppBar(
         actions: [
           TextButton(
-            onPressed: () => Navigator.push(
+            onPressed: () => Navigator.pushNamed(
               context,
-              MaterialPageRoute(builder: (context) => EditProfilePage()),
+              "/profilePage/edit",
             ),
             child: Text(
               "Éditer",
@@ -30,34 +29,56 @@ class _ProfilePage extends State<ProfilePage> {
           )
         ],
       ),
-      body: Container(
-        margin: EdgeInsets.symmetric(horizontal: 50),
-        child: ListView(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          children: [
-            Icon(
-              Icons.person,
-              size: 36,
+      body: Column(
+        children: [
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 50),
+              child: ListView(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                children: [
+                  Icon(
+                    Icons.person,
+                    size: 36,
+                  ),
+                  ...infoWidget(
+                    title: "Prénom",
+                    body: context.watch<ProfileProvider>().firstName,
+                  ),
+                  ...infoWidget(
+                    title: "Nom",
+                    body: context.watch<ProfileProvider>().lastName,
+                  ),
+                  ...infoWidget(
+                    title: "Date de naissance",
+                    body: context.watch<ProfileProvider>().birthToString(),
+                  ),
+                  ...infoWidget(
+                    title: "Ville",
+                    body: context.watch<ProfileProvider>().city,
+                  ),
+                ],
+              ),
             ),
-            ...infoWidget(
-              title: "Prénom",
-              body: context.watch<ProfileProvider>().firstName,
+          ),
+          Container(
+            margin: EdgeInsets.only(bottom: 20),
+            child: ElevatedButton(
+              onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                context,
+                "/logout",
+                (_) => false,
+              ),
+              child: Text(
+                "Se deconnecter",
+                style: TextStyle(
+                  color: Color.fromRGBO(31, 196, 178, 1),
+                ),
+              ),
             ),
-            ...infoWidget(
-              title: "Nom",
-              body: context.watch<ProfileProvider>().lastName,
-            ),
-            ...infoWidget(
-              title: "Date de naissance",
-              body: context.watch<ProfileProvider>().birthToString(),
-            ),
-            ...infoWidget(
-              title: "Ville",
-              body: context.watch<ProfileProvider>().city,
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

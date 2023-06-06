@@ -1,7 +1,4 @@
-import 'package:docto/page/profilePage.dart';
 import 'package:flutter/material.dart';
-
-import 'doctorListPage.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -21,9 +18,9 @@ class _MyHomePageState extends State<MyHomePage> {
               Icons.person,
               size: 36,
             ),
-            onPressed: () => Navigator.push(
+            onPressed: () => Navigator.pushNamed(
               context,
-              MaterialPageRoute(builder: (context) => ProfilePage()),
+              "/profilePage",
             ),
           ),
         ],
@@ -35,9 +32,9 @@ class _MyHomePageState extends State<MyHomePage> {
             mainWidget(
               title: "Chatter, Medecin",
               body: "Conversation en thread avec les medecins traitant",
-              onPressed: () => Navigator.push(
+              onPressed: () => Navigator.pushNamed(
                 context,
-                MaterialPageRoute(builder: (context) => DoctorListPage()),
+                "/doctorListPage",
               ),
             ),
             SizedBox(height: 20),
