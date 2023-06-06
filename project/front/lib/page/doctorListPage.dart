@@ -1,4 +1,3 @@
-import 'package:docto/page/threadPage.dart';
 import 'package:docto/provider/profileProvider.dart';
 import 'package:docto/provider/threadProvider.dart';
 import 'package:flutter/material.dart';
@@ -22,10 +21,10 @@ class _DoctorListPage extends State<DoctorListPage> {
             child: ListTile(
               title: Text(thread.name),
               onTap: () {
-                Navigator.push(
+                Navigator.pushNamed(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => ThreadPage(id: thread.id)),
+                  "/doctorListPage/thread",
+                  arguments: thread,
                 );
               },
               trailing: IconButton(

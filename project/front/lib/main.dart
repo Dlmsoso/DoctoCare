@@ -1,6 +1,12 @@
 import 'package:docto/page/connectionPage.dart';
+import 'package:docto/page/doctorListPage.dart';
+import 'package:docto/page/editProfilePage.dart';
+import 'package:docto/page/mainpage.dart';
+import 'package:docto/page/profilePage.dart';
+import 'package:docto/page/threadPage.dart';
 import 'package:docto/provider/profileProvider.dart';
 import 'package:docto/provider/threadProvider.dart';
+import 'package:docto/thread.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +34,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      onGenerateRoute: onGenerateRoute,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
@@ -51,5 +58,48 @@ class MyApp extends StatelessWidget {
       home: const ConnexionPage(),
       debugShowCheckedModeBanner: false,
     );
+  }
+
+  Route? onGenerateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case ('/mainPage'):
+        {
+          return MaterialPageRoute(
+            builder: (_) => MyHomePage(),
+          );
+        }
+      case ('/logout'):
+        {
+          return MaterialPageRoute(
+            builder: (_) => ConnexionPage(),
+          );
+        }
+      case ('/profilePage'):
+        {
+          return MaterialPageRoute(
+            builder: (_) => ProfilePage(),
+          );
+        }
+      case ('/profilePage/edit'):
+        {
+          return MaterialPageRoute(
+            builder: (_) => EditProfilePage(),
+          );
+        }
+      case ('/doctorListPage'):
+        {
+          return MaterialPageRoute(
+            builder: (_) => DoctorListPage(),
+          );
+        }
+      case ('/doctorListPage/thread'):
+        {
+          final thread = settings.arguments as Thread;
+          return MaterialPageRoute(
+            builder: (_) => ThreadPage(id: thread.id),
+          );
+        }
+    }
+    return null;
   }
 }
