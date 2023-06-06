@@ -21,7 +21,12 @@ class _ProfilePage extends State<ProfilePage> {
               context,
               MaterialPageRoute(builder: (context) => EditProfilePage()),
             ),
-            child: Text("Edit"),
+            child: Text(
+              "Éditer",
+              style: TextStyle(
+                color: Color.fromRGBO(31, 196, 178, 1),
+              ),
+            ),
           )
         ],
       ),
@@ -35,33 +40,58 @@ class _ProfilePage extends State<ProfilePage> {
               Icons.person,
               size: 36,
             ),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 15),
-              alignment: Alignment.center,
-              child: Text(
-                context.watch<ProfileProvider>().firstName,
-                style: TextStyle(fontSize: 24),
-              ),
+            ...infoWidget(
+              title: "Prénom",
+              body: context.watch<ProfileProvider>().firstName,
             ),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 15),
-              alignment: Alignment.center,
-              child: Text(
-                context.watch<ProfileProvider>().lastName,
-                style: TextStyle(fontSize: 24),
-              ),
+            ...infoWidget(
+              title: "Nom",
+              body: context.watch<ProfileProvider>().lastName,
             ),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 15),
-              alignment: Alignment.center,
-              child: Text(
-                context.watch<ProfileProvider>().birth,
-                style: TextStyle(fontSize: 24),
-              ),
+            ...infoWidget(
+              title: "Date de naissance",
+              body: context.watch<ProfileProvider>().birthToString(),
+            ),
+            ...infoWidget(
+              title: "Ville",
+              body: context.watch<ProfileProvider>().city,
             ),
           ],
         ),
       ),
     );
+  }
+
+  List<Widget> infoWidget({
+    required String title,
+    required String body,
+  }) {
+    return [
+      Container(
+        margin: EdgeInsets.symmetric(vertical: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Text(
+              body,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ],
+        ),
+      ),
+      const Divider(
+        color: Colors.black26,
+      ),
+    ];
   }
 }
