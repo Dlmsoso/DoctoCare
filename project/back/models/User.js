@@ -8,6 +8,7 @@ class User {
         this.id_secu = id_secu;
         this.age = age;
         this.city = city;
+        this.dateCreated = new Date();
     }
 }
 
