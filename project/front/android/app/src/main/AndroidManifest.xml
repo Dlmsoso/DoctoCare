@@ -1,7 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.docto">
-   <application
-        android:label="docto"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application
+        android:label="doctocare"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
