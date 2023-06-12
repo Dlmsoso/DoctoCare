@@ -20,6 +20,12 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Image.asset(
+              "assets/images/docteur.png",
+              width: 200,
+              height: 200,
+            ),
+            SizedBox(height: 20),
             mainWidget(
               title: "Chatter, Medecin",
               body: "Conversation en thread avec les medecins traitant",
@@ -33,7 +39,8 @@ class _MyHomePageState extends State<MyHomePage> {
               title: "Mes info, Data",
               body: "Toute les données médicales",
               onPressed: () => print('info'),
-            )
+            ),
+            SizedBox(height: 100),
           ],
         ),
       ),
