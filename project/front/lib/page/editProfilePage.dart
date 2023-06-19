@@ -168,7 +168,7 @@ class _EditProfilePage extends State<EditProfilePage> {
 
   void saveProfile() {
     context.read<ProfileProvider>().setAllProfile(
-          firstname: _formKey.currentState?.fields["firstName"]?.value,
+          firstName: _formKey.currentState?.fields["firstName"]?.value,
           lastName: _formKey.currentState?.fields["lastName"]?.value,
           birth: _formKey.currentState?.fields["birth"]?.value,
           city: _formKey.currentState?.fields["city"]?.value,

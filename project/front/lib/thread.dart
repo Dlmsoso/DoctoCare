@@ -4,28 +4,54 @@ Uuid uuid = Uuid();
 
 class Thread {
   Thread({
-    required this.name,
-    required this.doctorName,
+    this.name,
+    this.doctorName,
   });
 
-  final String id = uuid.v4();
-  final String name;
-  final String doctorName;
+  String id = uuid.v4();
+  String? name;
+  String? doctorName;
 
   List<Message> conversation = [
     Message(author: Author.myself, text: "Bonjour"),
     Message(author: Author.doctor, text: "Je suis occupé."),
   ];
+
+  Thread.fromJson(Map<String, dynamic> json) {
+    name = json["name"];
+    doctorName = json["doctorName"];
+    id = json["id"];
+  }
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'doctorName': doctorName,
+        'id': id,
+      };
 }
 
 class Message {
   Message({
-    required this.author,
-    required this.text,
+    this.author,
+    this.text,
+    this.threadId,
   });
 
-  final Author author;
-  final String text;
+  Author? author;
+  String? text;
+  String? threadId;
+
+  Message.fromJson(Map<String, dynamic> json) {
+    author = json["author"];
+    text = json["text"];
+    threadId = json["threadId"];
+  }
+
+  Map<String, dynamic> toJson() => {
+        'author': author,
+        'text': text,
+        'threadId': threadId,
+      };
 }
 
 enum Author { myself, doctor }

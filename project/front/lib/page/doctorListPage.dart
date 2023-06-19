@@ -39,7 +39,7 @@ class _DoctorListPage extends State<DoctorListPage> {
       .map(
         (thread) => Card(
           child: ListTile(
-            title: Text(thread.name),
+            title: Text(thread.name!),
             onTap: () {
               Navigator.pushNamed(
                 context,
