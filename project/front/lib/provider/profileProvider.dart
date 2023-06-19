@@ -1,12 +1,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
+
+Uuid uuid = Uuid();
 
 class ProfileProvider with ChangeNotifier, DiagnosticableTreeMixin {
+  String? _id = uuid.v4();
   String _firstName = "Maxime";
   String _lastName = "ULMANN";
   DateTime _birth = DateTime(2001);
   String _city = "Saint-Maur-des-Fossés";
   List<String>? _doctorList = ["Medecin 1", "Medecin 2", "Medecin 3"];
+
+  ProfileProvider() {}
 
   List<String> get doctorList => _doctorList!;
 
@@ -35,15 +41,31 @@ class ProfileProvider with ChangeNotifier, DiagnosticableTreeMixin {
   }
 
   void setAllProfile({
-    required String firstname,
+    required String firstName,
     required String lastName,
     required DateTime birth,
     required String city,
   }) {
-    _firstName = firstname;
+    _firstName = firstName;
     _lastName = lastName;
     _birth = birth;
     _city = city;
     notifyListeners();
   }
+
+  ProfileProvider.fromJson(Map<String, dynamic> json) {
+    _firstName = json["firstName"];
+    _lastName = json["lastName"];
+    _birth = json["birth"];
+    _city = json["city"];
+    _id = json["id"];
+  }
+
+  Map<String, dynamic> toJson() => {
+        'id': _id,
+        'firstName': firstName,
+        'lastName': lastName,
+        'birth': birth,
+        'city': city,
+      };
 }

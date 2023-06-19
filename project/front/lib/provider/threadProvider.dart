@@ -9,16 +9,21 @@ class ThreadProvider with ChangeNotifier, DiagnosticableTreeMixin {
   List<Thread> get threadList => _threadList;
 
   void createThread(threadName, doctorName) {
-    if (http.apiCreateThread()) {
+    Thread thread = Thread(
+      name: threadName,
+      doctorName: doctorName,
+    );
+
+    if (http.apiCreateThread(thread)) {
       _threadList.add(
-        Thread(name: threadName, doctorName: doctorName),
+        thread,
       );
       notifyListeners();
     }
   }
 
   void deleteThread(id) {
-    if (http.apiDeleteThread()) {
+    if (http.apiDeleteThread(id)) {
       _threadList.removeWhere((thread) => thread.id == id);
       notifyListeners();
     }
@@ -28,9 +33,9 @@ class ThreadProvider with ChangeNotifier, DiagnosticableTreeMixin {
     return _threadList.firstWhere((thread) => thread.id == id);
   }
 
-  void sendMessage(id, Message message) {
-    if (http.apiSendMessage()) {
-      getThread(id).conversation.add(message);
+  void sendMessage(Message message) {
+    if (http.apiSendMessage(message)) {
+      getThread(message.threadId).conversation.add(message);
       notifyListeners();
     }
   }

@@ -23,7 +23,7 @@ class _ThreadPage extends State<ThreadPage> {
   Widget build(BuildContext context) {
     Thread thread = context.watch<ThreadProvider>().getThread(id);
     return Scaffold(
-      appBar: AppBar(title: Text(thread.name)),
+      appBar: AppBar(title: Text(thread.name!)),
       body: Column(
         children: [
           chatSection(thread),
@@ -72,10 +72,10 @@ class _ThreadPage extends State<ThreadPage> {
         onPressed: () {
           if (writtingText.text.isNotEmpty) {
             context.read<ThreadProvider>().sendMessage(
-                  id,
                   Message(
                     author: Author.myself,
                     text: writtingText.text,
+                    threadId: id,
                   ),
                 );
             writtingText.clear();
@@ -86,8 +86,8 @@ class _ThreadPage extends State<ThreadPage> {
 
   Widget messageWidget(Message message) {
     return message.author == Author.myself
-        ? myselfMessageWidget(message.text)
-        : doctorMessageWidget(message.text);
+        ? myselfMessageWidget(message.text!)
+        : doctorMessageWidget(message.text!);
   }
 
   Widget doctorMessageWidget(String text) {
