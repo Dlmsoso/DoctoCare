@@ -30,7 +30,9 @@ class _ConnexionPage extends State<ConnexionPage> {
                 SizedBox(height: 15),
                 forgotPasswordWidget(),
                 SizedBox(height: 15),
-                connectionButton()
+                connectionButton(),
+                SizedBox(height: 15),
+                createAccountWidget(),
               ],
             ),
           ),
@@ -39,16 +41,22 @@ class _ConnexionPage extends State<ConnexionPage> {
     );
   }
 
-  Widget connectionButton() => ElevatedButton(
-        onPressed: () => Navigator.pushNamedAndRemoveUntil(
-          context,
-          "/mainPage",
-          (_) => false,
-        ),
-        child: Text(
-          "Connexion",
-          style: TextStyle(
-            color: Colors.black,
+  Widget connectionButton() => Container(
+        child: ElevatedButton(
+          onPressed: () => Navigator.pushNamedAndRemoveUntil(
+            context,
+            "/mainPage",
+            (_) => false,
+          ),
+          style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.symmetric(horizontal: 65),
+            backgroundColor: Color.fromRGBO(116, 231, 217, 1),
+          ),
+          child: Text(
+            "Connexion",
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
         ),
       );
@@ -69,8 +77,25 @@ class _ConnexionPage extends State<ConnexionPage> {
         child: TextButton(
           onPressed: () => print('arg'),
           child: Text(
-            "Mot de passe oublié",
+            "Mot de passe oublié ?",
             style: TextStyle(color: Colors.grey),
+          ),
+        ),
+      );
+
+  Widget createAccountWidget() => Align(
+        alignment: Alignment.center,
+        child: TextButton(
+          onPressed: () => Navigator.pushNamed(
+            context,
+            "/accountCreation",
+          ),
+          child: Text(
+            "Crée un compte",
+            style: TextStyle(
+              color: Colors.grey,
+              decoration: TextDecoration.underline,
+            ),
           ),
         ),
       );
