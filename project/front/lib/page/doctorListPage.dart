@@ -140,7 +140,7 @@ class _DoctorListPage extends State<DoctorListPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           content:
-              Text("Êtes vous sûr de vouloir supprimer cette conversation ?"),
+              Text("Êtes-vous sûr de vouloir supprimer cette conversation ?"),
           actions: <Widget>[
             TextButton(
               child: const Text('Retour'),

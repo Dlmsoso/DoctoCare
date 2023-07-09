@@ -1,3 +1,4 @@
+import 'package:docto/page/accountCreationPage.dart';
 import 'package:docto/page/connectionPage.dart';
 import 'package:docto/page/doctorListPage.dart';
 import 'package:docto/page/editProfilePage.dart';
@@ -67,6 +68,12 @@ class MyApp extends StatelessWidget {
         {
           return MaterialPageRoute(
             builder: (_) => MyHomePage(),
+          );
+        }
+      case ('/accountCreation'):
+        {
+          return MaterialPageRoute(
+            builder: (_) => AccountCreationPage(),
           );
         }
       case ('/logout'):
