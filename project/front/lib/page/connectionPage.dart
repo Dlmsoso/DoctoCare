@@ -75,7 +75,10 @@ class _ConnexionPage extends State<ConnexionPage> {
   Widget forgotPasswordWidget() => Align(
         alignment: Alignment.centerRight,
         child: TextButton(
-          onPressed: () => print('arg'),
+          onPressed: () => Navigator.pushNamed(
+            context,
+            "/recupPassword",
+          ),
           child: Text(
             "Mot de passe oublié ?",
             style: TextStyle(color: Colors.grey),
