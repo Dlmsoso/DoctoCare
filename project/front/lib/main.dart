@@ -2,6 +2,7 @@ import 'package:docto/page/accountCreationPage.dart';
 import 'package:docto/page/connectionPage.dart';
 import 'package:docto/page/doctorListPage.dart';
 import 'package:docto/page/editProfilePage.dart';
+import 'package:docto/page/forgottenPasswordPage.dart';
 import 'package:docto/page/mainpage.dart';
 import 'package:docto/page/profilePage.dart';
 import 'package:docto/page/threadPage.dart';
@@ -80,6 +81,12 @@ class MyApp extends StatelessWidget {
         {
           return MaterialPageRoute(
             builder: (_) => ConnexionPage(),
+          );
+        }
+      case ('/recupPassword'):
+        {
+          return MaterialPageRoute(
+            builder: (_) => ForgottenPasswordPage(),
           );
         }
       case ('/profilePage'):
