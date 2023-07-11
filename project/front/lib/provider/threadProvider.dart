@@ -9,7 +9,7 @@ class ThreadProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
   List<Thread> get threadList => _threadList;
 
-  Future<void> updateThread() async {
+  Future<void> updateThread(int id) async {
     List<List> newThreadList = [];
 
     List body = await apiGetMessages();
@@ -20,18 +20,20 @@ class ThreadProvider with ChangeNotifier, DiagnosticableTreeMixin {
     _threadList = [];
 
     newThreadList.forEach((List thread) {
-      List<Message> conversation = [];
+      if (id == thread[0]['sender'] || id == thread[0]['recipient']) {
+        List<Message> conversation = [];
 
-      thread.forEach((message) {
-        conversation.add(Message.fromJson(message));
-      });
+        thread.forEach((message) {
+          conversation.add(Message.fromJson(message));
+        });
 
-      Thread newThread =
-          Thread(name: thread[0]['thread_name'], conversation: []);
-      newThread.conversation = conversation;
-      newThread.id = thread[0]["thread_id"];
+        Thread newThread =
+            Thread(name: thread[0]['thread_name'], conversation: []);
+        newThread.conversation = conversation;
+        newThread.id = thread[0]["thread_id"];
 
-      _threadList.add(newThread);
+        _threadList.add(newThread);
+      }
     });
     notifyListeners();
   }

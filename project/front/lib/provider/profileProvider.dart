@@ -10,11 +10,25 @@ class ProfileProvider with ChangeNotifier, DiagnosticableTreeMixin {
   String _lastName = "ULMANN";
   DateTime _birth = DateTime(2001);
   String _city = "Saint-Maur-des-Fossés";
-  List<String>? _doctorList = ["Medecin 1", "Medecin 2", "Medecin 3"];
+  List<String>? _doctorList = ["Medecin 1", "Medecin 2"];
+  Map<String, int> _allDoctorMap = {
+    "Medecin 1": 1,
+    "Medecin 2": 2,
+    "Medecin 3": 3,
+    "Medecin 4": 4,
+  };
+  String? _token;
+  bool _isDoctor = false;
+  int? _idSecu;
 
   ProfileProvider() {}
 
+  String? get token => _token;
+  int? get idSecu => _idSecu;
+  bool get isDoctor => _isDoctor;
+
   List<String> get doctorList => _doctorList!;
+  Map<String, int> get allDoctorMap => _allDoctorMap;
 
   String get firstName => _firstName;
 
@@ -48,6 +62,9 @@ class ProfileProvider with ChangeNotifier, DiagnosticableTreeMixin {
     DateTime? birth,
     required String city,
     int? id,
+    int? idSecu,
+    String? token,
+    bool? isDoctor,
   }) {
     _firstName = firstName;
     _lastName = lastName;
@@ -58,6 +75,18 @@ class ProfileProvider with ChangeNotifier, DiagnosticableTreeMixin {
     if (id != null) {
       _id = id;
     }
+    if (idSecu != null) {
+      _idSecu = idSecu;
+    }
+
+    if (token != null) {
+      _token = token;
+    }
+
+    if (isDoctor != null) {
+      _isDoctor = isDoctor;
+    }
+
     notifyListeners();
   }
 

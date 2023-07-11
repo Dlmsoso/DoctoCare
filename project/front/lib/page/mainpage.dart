@@ -1,4 +1,7 @@
+import 'package:docto/http.dart';
+import 'package:docto/provider/profileProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -13,6 +16,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         actions: [
+          context.read<ProfileProvider>().isDoctor ? notifButton() : SizedBox(),
           profileButton(),
         ],
       ),
@@ -57,6 +61,71 @@ class _MyHomePageState extends State<MyHomePage> {
           "/profilePage",
         ),
       );
+
+  Widget notifButton() => IconButton(
+        icon: Icon(
+          Icons.notifications,
+          size: 36,
+        ),
+        onPressed: () => notifPopup(),
+      );
+
+  Future<void> notifPopup() async {
+    int id = context.read<ProfileProvider>().id;
+    String token = context.read<ProfileProvider>().token!;
+
+    List response = await apiGetInvitByDoctor(id, token);
+
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('Notification'),
+              content: SizedBox(
+                height: 200,
+                width: 200,
+                child: ListView(
+                  children: response
+                      .where((invit) => invit["verified"] == false)
+                      .map(
+                        (invit) => Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          color: Colors.black12,
+                          child: Row(
+                            children: [
+                              Expanded(child: Text(invit['name_pat'])),
+                              IconButton(
+                                onPressed: () {
+                                  apiAcceptInvit(invit['id'], token);
+                                  Navigator.of(context).pop();
+                                },
+                                icon: Icon(Icons.check),
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Quitter'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
 }
 
 Widget mainWidget({

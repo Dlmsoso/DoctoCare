@@ -14,18 +14,23 @@ class _DoctorListPage extends State<DoctorListPage> {
   @override
   void initState() {
     super.initState();
-    context.read<ThreadProvider>().updateThread();
+    context.read<ThreadProvider>().updateThread(
+          context.read<ProfileProvider>().id,
+        );
   }
 
   @override
   Widget build(BuildContext context) {
     List<Widget> threadListWidget = updateCardWidget();
+    print(context.read<ProfileProvider>().isDoctor);
 
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: context.read<ThreadProvider>().updateThread,
+            onPressed: () => context
+                .read<ThreadProvider>()
+                .updateThread(context.read<ProfileProvider>().id),
             icon: Icon(Icons.refresh),
           ),
         ],
@@ -38,11 +43,13 @@ class _DoctorListPage extends State<DoctorListPage> {
               margin: EdgeInsets.only(left: 25, top: 25),
               child: Text("Vous n'avez pas encore de conversation"),
             ),
-      floatingActionButton: FloatingActionButton.extended(
-        label: Text("Nouveau"),
-        icon: Icon(Icons.add),
-        onPressed: createCardPopUp,
-      ),
+      floatingActionButton: context.read<ProfileProvider>().isDoctor
+          ? SizedBox()
+          : FloatingActionButton.extended(
+              label: Text("Nouveau"),
+              icon: Icon(Icons.add),
+              onPressed: createCardPopUp,
+            ),
     );
   }
 
