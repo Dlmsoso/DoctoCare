@@ -5,7 +5,7 @@ import 'package:uuid/uuid.dart';
 Uuid uuid = Uuid();
 
 class ProfileProvider with ChangeNotifier, DiagnosticableTreeMixin {
-  String? _id = uuid.v4();
+  int _id = 1;
   String _firstName = "Maxime";
   String _lastName = "ULMANN";
   DateTime _birth = DateTime(2001);
@@ -23,6 +23,8 @@ class ProfileProvider with ChangeNotifier, DiagnosticableTreeMixin {
   DateTime get birth => _birth;
 
   String get city => _city;
+
+  int get id => _id;
 
   String birthToString() {
     return DateFormat("dd/MM/yyyy").format(birth);
@@ -43,13 +45,19 @@ class ProfileProvider with ChangeNotifier, DiagnosticableTreeMixin {
   void setAllProfile({
     required String firstName,
     required String lastName,
-    required DateTime birth,
+    DateTime? birth,
     required String city,
+    int? id,
   }) {
     _firstName = firstName;
     _lastName = lastName;
-    _birth = birth;
+    if (birth != null) {
+      _birth = birth;
+    }
     _city = city;
+    if (id != null) {
+      _id = id;
+    }
     notifyListeners();
   }
 

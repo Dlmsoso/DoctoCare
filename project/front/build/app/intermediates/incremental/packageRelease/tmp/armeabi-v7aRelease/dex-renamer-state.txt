@@ -1,4 +1,4 @@
-#Mon Jun 12 16:53:55 CEST 2023
+#Tue Jul 11 18:43:04 CEST 2023
 base.0=/Users/maxime/DoctoCare/project/front/build/app/intermediates/dex/release/minifyReleaseWithR8/classes.dex
 renamed.0=classes.dex
 path.0=classes.dex

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:uuid/uuid.dart';
 
 Uuid uuid = Uuid();
@@ -5,53 +7,57 @@ Uuid uuid = Uuid();
 class Thread {
   Thread({
     this.name,
-    this.doctorName,
+    this.otherName,
+    required this.conversation,
   });
 
-  String id = uuid.v4();
+  int id = Random().nextInt(99999999);
   String? name;
-  String? doctorName;
+  String? otherName;
 
-  List<Message> conversation = [
-    Message(author: Author.myself, text: "Bonjour"),
-    Message(author: Author.doctor, text: "Je suis occupé."),
-  ];
+  List<Message> conversation = [];
 
   Thread.fromJson(Map<String, dynamic> json) {
-    name = json["name"];
-    doctorName = json["doctorName"];
+    name = json["thread_name"];
+    otherName = json["sender"];
     id = json["id"];
   }
 
   Map<String, dynamic> toJson() => {
         'name': name,
-        'doctorName': doctorName,
+        'otherName': otherName,
         'id': id,
       };
 }
 
 class Message {
   Message({
-    this.author,
+    this.sender,
+    this.recipient,
     this.text,
     this.threadId,
   });
 
-  Author? author;
+  int? sender;
+  int? recipient;
   String? text;
-  String? threadId;
+  int? threadId;
 
   Message.fromJson(Map<String, dynamic> json) {
-    author = json["author"];
-    text = json["text"];
-    threadId = json["threadId"];
+    sender = json["sender"];
+    recipient = json["recipient"];
+    text = json["content"];
+    threadId = json["thread_id"];
   }
 
-  Map<String, dynamic> toJson() => {
-        'author': author,
-        'text': text,
-        'threadId': threadId,
-      };
+  Map<String, dynamic> toJson(Thread thread, int id) {
+    Map<String, dynamic> json = {
+      "sender": sender,
+      "recipient": recipient,
+      "content": text,
+      "thread_id": threadId,
+      "thread_name": thread.name,
+    };
+    return json;
+  }
 }
-
-enum Author { myself, doctor }

@@ -1,57 +1,78 @@
+import 'dart:convert';
+
 import 'package:docto/thread.dart';
+import 'package:http/http.dart' as http;
 
-Http http = Http();
+// Connexion
+Future<Map?> apiConnectAccount(String mail, String password) async {
+  Map<String, dynamic> json = {
+    'email': mail,
+    'password': password,
+  };
 
-class Http {
-  // Connexion
-  bool apiConnectAccount(String mail, String password) {
-    Map<String, dynamic> json = {
-      'mail': mail,
-      'password': password,
-    };
+  var response = await http.post(
+    Uri.parse('https://epi-doctocare.herokuapp.com/api/user/login'),
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+    },
+    body: jsonEncode(json),
+  );
 
-    return true;
+  if (jsonDecode(response.body)["message"] != null) {
+    return null;
   }
 
-  // Modification du compte
-  bool apiEditAccount(Map<String, dynamic> json) {
-    return true;
-  }
+  return jsonDecode(response.body);
+}
 
-  // Creation d'un compte
-  bool apiCreateAccount(Map<String, dynamic> json) {
-    return true;
-  }
+// Modification du compte
+bool apiEditAccount(Map<String, dynamic> json) {
+  return true;
+}
 
-  // Crée un thread de conversation
-  bool apiCreateThread(Thread thread) {
-    Map<String, dynamic> json = thread.toJson();
+// Creation d'un compte
+bool apiCreateAccount(Map<String, dynamic> json) {
+  return true;
+}
 
-    return true;
-  }
+// Crée un thread de conversation
+bool apiCreateThread(Thread thread) {
+  Map<String, dynamic> json = thread.toJson();
 
-  // Supprime un thread de conversation
-  bool apiDeleteThread(String threadId) {
-    Map<String, dynamic> json = {
-      'threadId': threadId,
-    };
+  return true;
+}
 
-    return true;
-  }
+// Supprime un thread de conversation
+bool apiDeleteThread(String threadId) {
+  Map<String, dynamic> json = {
+    'threadId': threadId,
+  };
 
-  // Retourne la liste des messages d'un thread
-  bool apiGetMessages(String threadId) {
-    Map<String, dynamic> json = {
-      'threadId': threadId,
-    };
+  return true;
+}
 
-    return true;
-  }
+// Retourne la liste des messages d'un thread
+apiGetMessages() async {
+  var response = await http.get(
+    Uri.parse('https://epi-doctocare.herokuapp.com/api/message/'),
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+    },
+  );
 
-  // Envoie d'un message
-  bool apiSendMessage(Message message) {
-    Map<String, dynamic> json = message.toJson();
+  return jsonDecode(response.body);
+}
 
-    return true;
-  }
+// Envoie d'un message
+Future<bool> apiSendMessage(Message message, Thread thread, int id) async {
+  Map<String, dynamic> json = message.toJson(thread, id);
+
+  var response = await http.post(
+    Uri.parse('https://epi-doctocare.herokuapp.com/api/message'),
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+    },
+    body: jsonEncode(json),
+  );
+  return true;
 }

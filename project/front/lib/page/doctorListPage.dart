@@ -12,18 +12,31 @@ class DoctorListPage extends StatefulWidget {
 
 class _DoctorListPage extends State<DoctorListPage> {
   @override
+  void initState() {
+    super.initState();
+    context.read<ThreadProvider>().updateThread();
+  }
+
+  @override
   Widget build(BuildContext context) {
     List<Widget> threadListWidget = updateCardWidget();
 
     return Scaffold(
-      appBar: AppBar(),
-      body: threadListWidget.isEmpty
-          ? Container(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: context.read<ThreadProvider>().updateThread,
+            icon: Icon(Icons.refresh),
+          ),
+        ],
+      ),
+      body: threadListWidget.isNotEmpty
+          ? ListView(
+              children: threadListWidget,
+            )
+          : Container(
               margin: EdgeInsets.only(left: 25, top: 25),
               child: Text("Vous n'avez pas encore de conversation"),
-            )
-          : ListView(
-              children: threadListWidget,
             ),
       floatingActionButton: FloatingActionButton.extended(
         label: Text("Nouveau"),
