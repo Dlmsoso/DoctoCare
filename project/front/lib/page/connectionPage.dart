@@ -1,5 +1,9 @@
+import 'package:docto/provider/profileProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:provider/provider.dart';
+
+import '../http.dart';
 
 class ConnexionPage extends StatefulWidget {
   const ConnexionPage({super.key});
@@ -41,13 +45,45 @@ class _ConnexionPage extends State<ConnexionPage> {
     );
   }
 
+  errorSnackBar() => SnackBar(
+        backgroundColor: Colors.red,
+        content: Align(
+          alignment: Alignment.center,
+          child: Text(
+            'Mauvais email ou mot de passe !',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      );
+
   Widget connectionButton() => Container(
         child: ElevatedButton(
-          onPressed: () => Navigator.pushNamedAndRemoveUntil(
-            context,
-            "/mainPage",
-            (_) => false,
-          ),
+          onPressed: () async {
+            String? login = _formKey.currentState?.fields["login"]?.value;
+            String? password = _formKey.currentState?.fields["password"]?.value;
+
+            if (login != null && password != null) {
+              Map? response = await apiConnectAccount(login, password);
+              print(response);
+              if (response != null) {
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  "/mainPage",
+                  (_) => false,
+                );
+                context.read<ProfileProvider>().setAllProfile(
+                      firstName: response["user"]["first_name"],
+                      lastName: response["user"]["last_name"],
+                      city: response["user"]["city"],
+                      id: response["user"]["id"],
+                    );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(errorSnackBar());
+              }
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(errorSnackBar());
+            }
+          },
           style: ElevatedButton.styleFrom(
             padding: EdgeInsets.symmetric(horizontal: 65),
             backgroundColor: Color.fromRGBO(116, 231, 217, 1),

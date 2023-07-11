@@ -1,3 +1,4 @@
+import 'package:docto/provider/profileProvider.dart';
 import 'package:docto/provider/threadProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,17 +8,24 @@ import '../thread.dart';
 class ThreadPage extends StatefulWidget {
   const ThreadPage({required this.id, super.key});
 
-  final String id;
+  final int id;
 
   @override
   State<ThreadPage> createState() => _ThreadPage(id);
 }
 
 class _ThreadPage extends State<ThreadPage> {
-  String id;
+  int id;
+  int? myId;
   TextEditingController writtingText = TextEditingController();
 
   _ThreadPage(this.id);
+
+  @override
+  void initState() {
+    super.initState();
+    myId = context.read<ProfileProvider>().id;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,19 +34,20 @@ class _ThreadPage extends State<ThreadPage> {
       appBar: AppBar(title: Text(thread.name!)),
       body: Column(
         children: [
-          chatSection(thread),
+          chatSection(thread, myId!),
           messageSection(),
         ],
       ),
     );
   }
 
-  Widget chatSection(Thread thread) => Expanded(
+  Widget chatSection(Thread thread, int myId) => Expanded(
         child: ListView(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           children: [
-            ...thread.conversation.map((message) => messageWidget(message))
+            ...thread.conversation
+                .map((message) => messageWidget(message, myId))
           ],
         ),
       );
@@ -73,10 +82,12 @@ class _ThreadPage extends State<ThreadPage> {
           if (writtingText.text.isNotEmpty) {
             context.read<ThreadProvider>().sendMessage(
                   Message(
-                    author: Author.myself,
+                    recipient: 998,
+                    sender: myId,
                     text: writtingText.text,
                     threadId: id,
                   ),
+                  context.read<ProfileProvider>().id,
                 );
             writtingText.clear();
           }
@@ -84,8 +95,8 @@ class _ThreadPage extends State<ThreadPage> {
         icon: Icon(Icons.send),
       );
 
-  Widget messageWidget(Message message) {
-    return message.author == Author.myself
+  Widget messageWidget(Message message, int myId) {
+    return message.sender == myId
         ? myselfMessageWidget(message.text!)
         : doctorMessageWidget(message.text!);
   }
