@@ -40,12 +40,12 @@ class _ProfilePage extends State<ProfilePage> {
                     body: context.watch<ProfileProvider>().lastName,
                   ),
                   ...infoWidget(
-                    title: "Date de naissance",
-                    body: context.watch<ProfileProvider>().birthToString(),
-                  ),
-                  ...infoWidget(
                     title: "Ville",
                     body: context.watch<ProfileProvider>().city,
+                  ),
+                  ...infoWidget(
+                    title: "Numéro de sécurité sociale",
+                    body: context.watch<ProfileProvider>().idSecu.toString(),
                   ),
                 ],
               ),

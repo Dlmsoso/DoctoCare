@@ -64,7 +64,6 @@ class _ConnexionPage extends State<ConnexionPage> {
 
             if (login != null && password != null) {
               Map? response = await apiConnectAccount(login, password);
-              print(response);
               if (response != null) {
                 Navigator.pushNamedAndRemoveUntil(
                   context,
@@ -76,6 +75,9 @@ class _ConnexionPage extends State<ConnexionPage> {
                       lastName: response["user"]["last_name"],
                       city: response["user"]["city"],
                       id: response["user"]["id"],
+                      idSecu: response["user"]["id_secu"],
+                      isDoctor: response["user"]["is_med"] ?? false,
+                      token: response["token"],
                     );
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(errorSnackBar());
