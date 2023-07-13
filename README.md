@@ -7,3 +7,6 @@ Project for our course with Doctolib.
 - [DUCHET Alexis](https://github.com/Ratcraft)
 - [LOVELAND Manon](https://github.com/Ratcraft)
 - [ULMANN Maxime](https://github.com/ApiShiro)
+
+Voici le lien de l'API :
+`https://epi-doctocare.herokuapp.com/`
