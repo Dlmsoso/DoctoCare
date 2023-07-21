@@ -31,7 +31,17 @@ class _ThreadPage extends State<ThreadPage> {
   Widget build(BuildContext context) {
     Thread thread = context.watch<ThreadProvider>().getThread(id);
     return Scaffold(
-      appBar: AppBar(title: Text(thread.name!)),
+      appBar: AppBar(
+        title: Text(thread.name!),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await context.read<ThreadProvider>().updateThread(myId!);
+            },
+            icon: Icon(Icons.refresh),
+          ),
+        ],
+      ),
       body: Column(
         children: [
           chatSection(thread, myId!),
@@ -79,10 +89,16 @@ class _ThreadPage extends State<ThreadPage> {
 
   Widget sendMessageIcon() => IconButton(
         onPressed: () {
+          Thread thread = context.read<ThreadProvider>().getThread(id);
+
+          int idRecipient = thread.otherName == null
+              ? thread.otherId!
+              : context.read<ProfileProvider>().allDoctorMap[thread.otherName]!;
+
           if (writtingText.text.isNotEmpty) {
             context.read<ThreadProvider>().sendMessage(
                   Message(
-                    recipient: 998,
+                    recipient: idRecipient,
                     sender: myId,
                     text: writtingText.text,
                     threadId: id,

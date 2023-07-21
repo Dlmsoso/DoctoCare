@@ -15,6 +15,7 @@ class _AccountCreationPage extends State<AccountCreationPage> {
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController cityController = TextEditingController();
+  TextEditingController idSecuController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -54,10 +55,14 @@ class _AccountCreationPage extends State<AccountCreationPage> {
                     labelText: "Nom",
                     controller: lastNameController,
                   ),
-                  birthWidget(),
+                  //birthWidget(),
                   infoWidget(
                     labelText: "Ville",
                     controller: cityController,
+                  ),
+                  infoWidget(
+                    labelText: "Numéro de sécurité sociale",
+                    controller: idSecuController,
                   ),
                 ],
               ),

@@ -1,3 +1,4 @@
+import 'package:docto/http.dart';
 import 'package:docto/provider/profileProvider.dart';
 import 'package:docto/provider/threadProvider.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,6 @@ class _DoctorListPage extends State<DoctorListPage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> threadListWidget = updateCardWidget();
-    print(context.read<ProfileProvider>().isDoctor);
 
     return Scaffold(
       appBar: AppBar(
@@ -59,7 +59,9 @@ class _DoctorListPage extends State<DoctorListPage> {
       .map(
         (thread) => Card(
           child: ListTile(
-            title: Text(thread.name!),
+            title: () {
+              return Text(thread.name!);
+            }(),
             onTap: () {
               Navigator.pushNamed(
                 context,
@@ -76,11 +78,36 @@ class _DoctorListPage extends State<DoctorListPage> {
       )
       .toList();
 
-  Future<void> createCardPopUp() {
-    List<String> doctorList = context.read<ProfileProvider>().doctorList;
-    String doctorDropdownValue = doctorList.first;
+  noDoctorSnackBar() => SnackBar(
+        backgroundColor: Colors.red,
+        content: Align(
+          alignment: Alignment.center,
+          child: Text(
+            'Veuillez ajouter un médecin avant de crée une conversation',
+            style: TextStyle(fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+
+  Future<void> createCardPopUp() async {
     TextEditingController threadName = TextEditingController();
     final _formKey = GlobalKey<FormState>();
+    List doctorListMap = await apiGetAllDoctorByID(
+        context.read<ProfileProvider>().id,
+        context.read<ProfileProvider>().token!);
+
+    List<dynamic> doctorList2 =
+        doctorListMap.map((element) => element["name_med"]).toList();
+
+    List<String> doctorList = List<String>.from(doctorList2);
+
+    if (doctorList.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(noDoctorSnackBar());
+      return;
+    }
+
+    String doctorDropdownValue = doctorList.first;
 
     return showDialog<void>(
       context: context,

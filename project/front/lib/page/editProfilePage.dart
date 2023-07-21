@@ -42,7 +42,7 @@ class _EditProfilePage extends State<EditProfilePage> {
                   ],
                 ),
               ),
-              addDoctorWidget(),
+              //addDoctorWidget(),
             ],
           ),
         ),
@@ -124,6 +124,7 @@ class _EditProfilePage extends State<EditProfilePage> {
                     String token = context.read<ProfileProvider>().token!;
 
                     apiSendInvit(name, doctorName, id, doctorId, token);
+                    Navigator.of(context).pop();
                   },
                 ),
               ],
