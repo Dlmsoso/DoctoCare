@@ -61,6 +61,7 @@ class _ConnexionPage extends State<ConnexionPage> {
           onPressed: () async {
             String? login = _formKey.currentState?.fields["login"]?.value;
             String? password = _formKey.currentState?.fields["password"]?.value;
+            Map<String, int> doctorMap = {};
 
             if (login != null && password != null) {
               Map? response = await apiConnectAccount(login, password);
@@ -79,6 +80,15 @@ class _ConnexionPage extends State<ConnexionPage> {
                       isDoctor: response["user"]["is_med"] ?? false,
                       token: response["token"],
                     );
+
+                List doctorList = await apiGetAllDoctor(response["token"]);
+                doctorList.forEach((element) {
+                  doctorMap[element["first_name"] +
+                      " " +
+                      element["last_name"]] = element["id"];
+                });
+
+                context.read<ProfileProvider>().allDoctorMap = doctorMap;
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(errorSnackBar());
               }

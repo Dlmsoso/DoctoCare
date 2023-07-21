@@ -16,7 +16,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          context.read<ProfileProvider>().isDoctor ? notifButton() : SizedBox(),
+          context.read<ProfileProvider>().isDoctor
+              ? notifButton()
+              : addDoctorButton(),
           profileButton(),
         ],
       ),
@@ -70,6 +72,17 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () => notifPopup(),
       );
 
+  invitSnackBar() => SnackBar(
+        backgroundColor: Color.fromRGBO(31, 196, 178, 1),
+        content: Align(
+          alignment: Alignment.center,
+          child: Text(
+            'Invitation accepter',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      );
+
   Future<void> notifPopup() async {
     int id = context.read<ProfileProvider>().id;
     String token = context.read<ProfileProvider>().token!;
@@ -102,6 +115,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 onPressed: () {
                                   apiAcceptInvit(invit['id'], token);
                                   Navigator.of(context).pop();
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(invitSnackBar());
                                 },
                                 icon: Icon(Icons.check),
                               )
@@ -116,6 +131,81 @@ class _MyHomePageState extends State<MyHomePage> {
                 TextButton(
                   child: const Text('Quitter'),
                   onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget addDoctorButton() => IconButton(
+        onPressed: addDoctorPopup,
+        icon: Icon(Icons.add_reaction),
+      );
+
+  Future<void> addDoctorPopup() {
+    Map<String, int> doctorMap = context.read<ProfileProvider>().allDoctorMap;
+    List<String> doctorList = doctorMap.keys.toList();
+
+    String doctorDropdownValue = doctorList.first;
+    TextEditingController threadName = TextEditingController();
+    final _formKey = GlobalKey<FormState>();
+
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('Nouveau docteur'),
+              content: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: ListBody(
+                    children: <Widget>[
+                      DropdownButton(
+                        value: doctorDropdownValue,
+                        items: doctorList
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? value) {
+                          setState(() {
+                            doctorDropdownValue = value!;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Retour'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: const Text('Confirmer'),
+                  onPressed: () {
+                    String name = context.read<ProfileProvider>().firstName +
+                        " " +
+                        context.read<ProfileProvider>().lastName;
+                    String doctorName = doctorDropdownValue;
+                    int id = context.read<ProfileProvider>().id;
+                    int doctorId = doctorMap[doctorName]!;
+                    String token = context.read<ProfileProvider>().token!;
+
+                    apiSendInvit(name, doctorName, id, doctorId, token);
                     Navigator.of(context).pop();
                   },
                 ),

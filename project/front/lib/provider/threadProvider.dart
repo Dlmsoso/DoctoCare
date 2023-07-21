@@ -27,8 +27,15 @@ class ThreadProvider with ChangeNotifier, DiagnosticableTreeMixin {
           conversation.add(Message.fromJson(message));
         });
 
-        Thread newThread =
-            Thread(name: thread[0]['thread_name'], conversation: []);
+        int otherId = id == thread[0]["sender"]
+            ? thread[0]["recipient"]
+            : thread[0]["sender"];
+
+        Thread newThread = Thread(
+          name: thread[0]['thread_name'],
+          conversation: [],
+          otherId: otherId,
+        );
         newThread.conversation = conversation;
         newThread.id = thread[0]["thread_id"];
 
@@ -48,8 +55,9 @@ class ThreadProvider with ChangeNotifier, DiagnosticableTreeMixin {
     notifyListeners();
   }
 
-  void deleteThread(id) {
+  Future<void> deleteThread(id) async {
     _threadList.removeWhere((thread) => thread.id == id);
+    await apiDeleteThread(id);
     notifyListeners();
   }
 

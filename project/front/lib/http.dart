@@ -64,10 +64,15 @@ bool apiCreateAccount(Map<String, dynamic> json) {
 }
 
 // Supprime un thread de conversation
-bool apiDeleteThread(String threadId) {
-  Map<String, dynamic> json = {
-    'threadId': threadId,
-  };
+Future<bool> apiDeleteThread(int threadId) async {
+  var response = await http.delete(
+    Uri.parse(
+      'https://epi-doctocare.herokuapp.com/api/message/' + threadId.toString(),
+    ),
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+    },
+  );
 
   return true;
 }
@@ -155,4 +160,34 @@ Future<bool> apiAcceptInvit(
   );
 
   return true;
+}
+
+Future<List> apiGetAllDoctor(
+  String token,
+) async {
+  var response = await http.get(
+    Uri.parse('https://epi-doctocare.herokuapp.com/api/user/listMed/'),
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      HttpHeaders.authorizationHeader: token,
+    },
+  );
+
+  return jsonDecode(response.body);
+}
+
+Future<List> apiGetAllDoctorByID(
+  int id,
+  String token,
+) async {
+  var response = await http.get(
+    Uri.parse('https://epi-doctocare.herokuapp.com/api/patMed/listPat/' +
+        id.toString()),
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      HttpHeaders.authorizationHeader: token,
+    },
+  );
+
+  return jsonDecode(response.body);
 }

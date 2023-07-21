@@ -8,10 +8,12 @@ class Thread {
   Thread({
     this.name,
     this.otherName,
+    this.otherId,
     required this.conversation,
   });
 
   int id = Random().nextInt(99999999);
+  int? otherId;
   String? name;
   String? otherName;
 

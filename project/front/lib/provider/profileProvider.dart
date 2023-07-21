@@ -44,6 +44,10 @@ class ProfileProvider with ChangeNotifier, DiagnosticableTreeMixin {
     return DateFormat("dd/MM/yyyy").format(birth);
   }
 
+  void set allDoctorMap(Map<String, int> allDoctorMap) {
+    _allDoctorMap = allDoctorMap;
+  }
+
   void set setFirstName(String firstName) {
     _firstName = firstName;
   }
